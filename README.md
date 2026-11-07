@@ -26,7 +26,7 @@ plugins {
 }
 
 repositories {
-    maven("https://raw.githubusercontent.com/usr-sch/BeltariaCommons/maven/") {
+    maven("https://raw.githubusercontent.com/Beltaria/beltariacommons/maven/") {
         content { includeModule("fr.beltaria", "commons") }
     }
 }
