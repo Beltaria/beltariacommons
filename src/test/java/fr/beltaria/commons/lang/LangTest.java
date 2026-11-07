@@ -166,6 +166,26 @@ class LangTest {
     }
 
     @Test
+    void aTextWrittenAsASectionIsRefused() throws IOException {
+        Files.writeString(this.folder.resolve(Lang.FILE), "hello:\n  a: x\n", StandardCharsets.UTF_8);
+        IOException refused = assertThrows(IOException.class, () -> Lang.load(plugin(BUNDLED)));
+        assertTrue(refused.getMessage().contains("'hello'"), refused.getMessage());
+    }
+
+    @Test
+    void aSectionWrittenAsATextIsRefused() throws IOException {
+        Files.writeString(this.folder.resolve(Lang.FILE), "menu: \"&8Menu\"\n", StandardCharsets.UTF_8);
+        IOException refused = assertThrows(IOException.class, () -> Lang.load(plugin(BUNDLED)));
+        assertTrue(refused.getMessage().contains("'menu'"), refused.getMessage());
+    }
+
+    @Test
+    void aListWhereTheJarHasATextIsAccepted() throws IOException {
+        Files.writeString(this.folder.resolve(Lang.FILE), "bye:\n  - \"A\"\n  - \"B\"\n", StandardCharsets.UTF_8);
+        assertEquals(List.of("A", "B"), Lang.load(plugin(BUNDLED)).lines("bye"));
+    }
+
+    @Test
     void aJarWithoutLangIsABuildError() throws IOException {
         Files.writeString(this.folder.resolve(Lang.FILE), "hello: x\n", StandardCharsets.UTF_8);
         assertThrows(IllegalStateException.class, () -> Lang.load(plugin(null)));

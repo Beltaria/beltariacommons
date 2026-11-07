@@ -65,8 +65,36 @@ public final class Lang {
         } catch (InvalidConfigurationException invalid) {
             throw new IOException(file.getPath() + " n'est pas du YAML valide : " + invalid.getMessage(), invalid);
         }
-        texts.setDefaults(bundled(plugin));
+        YamlConfiguration defaults = bundled(plugin);
+        List<String> problems = shapeProblems(texts, defaults);
+        if (!problems.isEmpty()) {
+            throw new IOException(file.getPath() + " : " + String.join(" ; ", problems));
+        }
+        texts.setDefaults(defaults);
         return new Lang(texts);
+    }
+
+    /**
+     * Les cles du fichier du serveur dont la forme contredit le jar : une section la ou le jar a un texte (un texte
+     * indente par erreur sous sa cle), ou un texte la ou le jar a une section. Sans ce controle, le joueur verrait
+     * {@code [cle]} ou le texte du jar, et la console un simple avertissement.
+     */
+    static List<String> shapeProblems(ConfigurationSection server, ConfigurationSection defaults) {
+        List<String> problems = new ArrayList<>();
+        for (String key : defaults.getKeys(true)) {
+            // Appele avant setDefaults : contains ne voit que le fichier du serveur.
+            if (!server.contains(key)) {
+                continue;
+            }
+            boolean jarSection = defaults.isConfigurationSection(key);
+            boolean serverSection = server.isConfigurationSection(key);
+            if (jarSection && !serverSection) {
+                problems.add("'" + key + "' doit etre une section (cles indentees en dessous), pas un texte");
+            } else if (!jarSection && serverSection) {
+                problems.add("'" + key + "' doit etre un texte ou une liste de lignes, pas une section");
+            }
+        }
+        return problems;
     }
 
     /** Textes deja lus, {@code defaults} completant les cles absentes de {@code texts} (tests, sources non fichier). */

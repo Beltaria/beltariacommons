@@ -12,7 +12,7 @@ Ce qui a un état ou un propriétaire ne va pas ici, mais dans le plugin qui en 
 
 | Classe | Rôle |
 |---|---|
-| `fr.beltaria.commons.lang.Lang` | Textes de `lang.yml`. Les clés absentes du fichier sont complétées par le jar, les codes `&` deviennent des couleurs, les `{placeholders}` sont remplacés et `prefix` précède chaque ligne envoyée. Un message vide n'est pas envoyé. Un fichier illisible fait échouer le chargement. `unknownKeys()` liste les fautes de frappe. |
+| `fr.beltaria.commons.lang.Lang` | Textes de `lang.yml`. Les clés absentes du fichier sont complétées par le jar, les codes `&` deviennent des couleurs, les `{placeholders}` sont remplacés et `prefix` précède chaque ligne envoyée. Un message vide n'est pas envoyé. Un fichier illisible, ou dont une clé contredit la forme du jar (section à la place d'un texte, ou l'inverse), fait échouer le chargement. `unknownKeys()` liste les fautes de frappe. |
 | `fr.beltaria.commons.text.Placeholders` | Remplace les `{nom}` en une seule passe : une valeur insérée n'est jamais relue. Un `{nom}` sans valeur reste visible. Des paires impaires ou un nom en double lèvent une exception. |
 | `fr.beltaria.commons.time.Durations` | Lit les durées `30m`, `1h30m`, `2d`, `45s` et les affiche sous quatre formes : `compact` (relisible), `clock` (`29:59`), `words` (`1 h 05`) et `countdown` (`4m 12s`). |
 
@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies {
-    implementation("fr.beltaria:commons:1.0.0")
+    implementation("fr.beltaria:commons:1.1.0")
 }
 
 tasks.shadowJar {
