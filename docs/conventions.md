@@ -36,7 +36,7 @@ Ces règles valent pour tous les plugins Beltaria, y compris KOTH. Un admin qui 
 
 - Les clés sont en anglais, en `kebab-case`. Une valeur affichée au joueur (nom d'objet, de lieu) reste en français, mais sa clé est anglaise.
 - Les durées sont du texte au format `Durations` : `30s`, `5m`, `1h30m`, `2d`. La clé ne porte pas d'unité : `cooldown: 30s`, et non `cooldown-seconds: 30`. Exception : un réglage d'animation inférieur à la seconde peut rester en ticks, avec le suffixe `-ticks` (`hold-ticks: 40`).
-- Les heures et les jours sont lus en `Europe/Paris`.
+- Les heures et les jours sont lus en `Europe/Paris`, par `fr.beltaria.commons.time.Weekly`. Aucune clé de fuseau horaire.
 - Les montants sont des nombres, en monnaie BeltariaEconomy, sans symbole.
 - Une clé absente prend la valeur par défaut du jar, que le fichier de départ documente en commentaire.
 
@@ -47,7 +47,25 @@ Ces règles valent pour tous les plugins Beltaria, y compris KOTH. Un admin qui 
 - **Dans les fichiers de contenu** (une caisse, un outpost, un item), une entrée invalide est refusée seule et nommée. Les autres entrées se chargent.
 - Une clé inconnue (faute de frappe, clé retirée) donne un avertissement au chargement, sans blocage.
 
-## 7. Build
+## 7. Événements (KOTH, Totem, Outpost, Duels)
+
+- **Planning** : `schedule.entries`, une liste d'entrées hebdomadaires lues par `Weekly`.
+  - `days` : une liste (`[samedi, dimanche]`, en français ou en anglais). Clé absente ou `"*"` : tous les jours. Une liste vide est refusée.
+  - `time` (un lancement) ou `from`/`to` (un créneau) : `"HH:mm"` entre guillemets ; `to` accepte `"24:00"`.
+  - Pas de planning (Duels, lancé par les joueurs) : pas de clé `schedule`.
+  - Exception documentée : KOTH garde son `schedule.json`.
+- **Annonces avant le début** : `announce-before`, une liste de durées strictement positives (`[15m, 5m, 1m]`) ; `[]` n'annonce rien.
+- **Commandes de récompense** : commandes console, sous `rewards`.
+  - `winner-commands` : une fois, pour le gagnant.
+  - `member-commands` : une fois par membre en ligne de la faction gagnante.
+  - Placeholders `{player}` et `{faction}`, plus ceux propres à l'événement.
+- **Début** : chaque événement appelle `EventStartedEvent(type, nom)` de BeltariaClassements, sur le fil principal, au moment où il devient jouable.
+  - `koth` : au lancement.
+  - `totem` : au lancement.
+  - `outpost` : à la fin d'un créneau désactivé.
+  - Duels appelle `DuelStartedEvent`.
+
+## 8. Build
 
 - Le code est compilé en Java 25 (`options.release = 25`).
 - La version vient du tag `vX.Y.Z` (`-PpluginVersion` en CI).
