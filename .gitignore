@@ -1,0 +1,42 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Surcharges locales : chemin du jar serveur, dossier du serveur de test.
+# gradle.properties est versionne, local.properties ne doit pas l'etre.
+local.properties
+gradle-local.properties
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+bin/
+out/
+
+# Journaux locaux
+logs/
+
+# Java
+*.class
+hs_err_pid*
+replay_pid*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# jqwik
+.jqwik-database
+
+
+# Claude Code worktrees
+.claude/
