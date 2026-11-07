@@ -57,6 +57,29 @@ class WeeklyTest {
         assertEquals(Set.of(), Weekly.parseDays(null));
         assertEquals(Set.of(), Weekly.parseDays("*"));
         assertEquals(Set.of(), Weekly.parseDays(" Tous "));
+        assertEquals(Set.of(), Weekly.parseDays(List.of("*")));
+        assertEquals(Set.of(), Weekly.parseDays(List.of("tous")));
+        // melange : "*" n'est pas un jour
+        assertThrows(IllegalArgumentException.class, () -> Weekly.parseDays(List.of("*", "samedi")));
+    }
+
+    @Test
+    void theDocumentedEveryDayFormsParseThroughTheRealYaml() throws InvalidConfigurationException {
+        YamlConfiguration yaml = new YamlConfiguration();
+        yaml.loadFromString("a: \"*\"\nb: [\"*\"]\nc: [tous]\nd: tous\n");
+        for (String key : List.of("a", "b", "c", "d")) {
+            assertEquals(Set.of(), Weekly.parseDays(yaml.get(key)), key);
+        }
+        // [*] sans guillemets n'est pas du YAML : * ouvre un alias
+        assertThrows(InvalidConfigurationException.class, () -> new YamlConfiguration().loadFromString("e: [*]\n"));
+    }
+
+    @Test
+    void theHintForANumberIsAValueTheSameMethodAccepts() {
+        IllegalArgumentException start = assertThrows(IllegalArgumentException.class, () -> Weekly.parseTime(1440));
+        assertTrue(!start.getMessage().contains("\"24:00\""), start.getMessage());
+        IllegalArgumentException end = assertThrows(IllegalArgumentException.class, () -> Weekly.parseEndTime(1440));
+        assertTrue(end.getMessage().contains("\"24:00\""), end.getMessage());
     }
 
     @Test

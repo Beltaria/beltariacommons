@@ -75,7 +75,8 @@ public final class Weekly {
      * Les jours d'une config ou d'une commande. Vide veut dire tous les jours.
      *
      * <ul>
-     * <li>{@code null} (cle absente), {@code "*"} ou {@code "tous"} : tous les jours ;</li>
+     * <li>{@code null} (cle absente), {@code "*"} ou {@code "tous"}, seuls ou seuls dans une liste : tous les
+     * jours ;</li>
      * <li>une liste YAML ({@code [samedi, dimanche]}) ou un texte separe par des virgules
      * ({@code samedi,dimanche}) : ces jours.</li>
      * </ul>
@@ -88,6 +89,11 @@ public final class Weekly {
         }
         Collection<?> items;
         if (value instanceof Collection<?> list) {
+            // [*] ou [tous] : la meme chose que "*", ecrite en liste
+            if (list.size() == 1 && list.iterator().next() != null
+                    && EVERY_DAY.contains(normalize(String.valueOf(list.iterator().next())))) {
+                return Set.of();
+            }
             items = list;
         } else {
             String text = String.valueOf(value).trim();
@@ -175,7 +181,7 @@ public final class Weekly {
             // time: 1200 (midi ?) donnerait 20:00. Indiscernables : refus, avec la forme a ecrire quand le nombre
             // peut venir d'une heure.
             long raw = number.longValue();
-            String hint = raw == number.doubleValue() && raw >= 60 && raw <= MINUTES_PER_DAY
+            String hint = raw == number.doubleValue() && raw >= 60 && raw <= (end ? MINUTES_PER_DAY : MINUTES_PER_DAY - 1)
                     ? "\"" + String.format(Locale.ROOT, "%02d:%02d", raw / 60, raw % 60) + "\""
                     : "\"21:00\"";
             throw new IllegalArgumentException("heure " + value + " sans guillemets (" + expected

@@ -50,7 +50,7 @@ Ces règles valent pour tous les plugins Beltaria, y compris KOTH. Un admin qui 
 ## 7. Événements (KOTH, Totem, Outpost, Duels)
 
 - **Planning** : `schedule.entries`, une liste d'entrées hebdomadaires lues par `Weekly`.
-  - `days` : une liste (`[samedi, dimanche]`, en français ou en anglais). Clé absente ou `"*"` : tous les jours. Une liste vide est refusée.
+  - `days` : une liste (`[samedi, dimanche]`, en français ou en anglais). Clé absente, `"*"`, `["*"]` ou `[tous]` : tous les jours (`*` toujours entre guillemets : seul, YAML le lit comme un alias). Une liste vide est refusée.
   - `time` (un lancement) ou `from`/`to` (un créneau) : `"HH:mm"` entre guillemets ; `to` accepte `"24:00"`.
   - Pas de planning (Duels, lancé par les joueurs) : pas de clé `schedule`.
   - Exception documentée : KOTH garde son `schedule.json`.
