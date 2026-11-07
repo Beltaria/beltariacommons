@@ -30,7 +30,8 @@ import fr.beltaria.commons.text.Placeholders;
  * ni relue ;</li>
  * <li>{@code prefix} precede chaque message envoye par {@link #send} ; un message vide dans le fichier n'est pas
  * envoye, c'est ainsi qu'un admin coupe un message ;</li>
- * <li>un fichier illisible est une erreur ({@link #load} leve), jamais un repli silencieux sur les textes du jar.</li>
+ * <li>un fichier illisible, ou dont une cle contredit la forme du jar, est une erreur ({@link #load} leve), jamais
+ * un repli silencieux sur les textes du jar.</li>
  * </ul>
  * Immuable apres chargement : lisible depuis n'importe quel thread. Un rechargement construit une nouvelle instance.
  */
@@ -51,7 +52,8 @@ public final class Lang {
      * Lit {@code lang.yml} du dossier du plugin, ecrit d'abord celui du jar s'il manque. Les textes du jar
      * completent les cles absentes.
      *
-     * @throws IOException si le fichier ne se lit pas ou n'est pas du YAML valide (le message nomme le fichier)
+     * @throws IOException si le fichier ne se lit pas, n'est pas du YAML valide, ou si une cle contredit la forme du
+     *         jar (section a la place d'un texte, ou l'inverse) ; le message nomme le fichier et les cles
      * @throws IllegalStateException si le jar ne contient pas de {@code lang.yml} (erreur de build)
      */
     public static Lang load(Plugin plugin) throws IOException {
