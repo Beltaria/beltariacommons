@@ -1,0 +1,80 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "fr.beltaria",
+    "module": "commons",
+    "version": "1.2.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.4.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 25,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "commons-1.2.1.jar",
+          "url": "commons-1.2.1.jar",
+          "size": 13888,
+          "sha512": "a13f1d585b6612bcaa6cb2f3e1d304115a27bf5dc65c79cfeb8316ba718324923072c8c4b9b237a959ddae39a5262b31ed0aeabaaef88c6d6a36287342626688",
+          "sha256": "f3ff35b41f35d5c68b98e2fdefc3f8b1c0a0ce0e0de4ace9efafec7c0f575860",
+          "sha1": "41c44a5a962d589def137828d6ca3fae8e224ffc",
+          "md5": "2400e38fd538089155bf11f4c76ac48b"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 25,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "commons-1.2.1.jar",
+          "url": "commons-1.2.1.jar",
+          "size": 13888,
+          "sha512": "a13f1d585b6612bcaa6cb2f3e1d304115a27bf5dc65c79cfeb8316ba718324923072c8c4b9b237a959ddae39a5262b31ed0aeabaaef88c6d6a36287342626688",
+          "sha256": "f3ff35b41f35d5c68b98e2fdefc3f8b1c0a0ce0e0de4ace9efafec7c0f575860",
+          "sha1": "41c44a5a962d589def137828d6ca3fae8e224ffc",
+          "md5": "2400e38fd538089155bf11f4c76ac48b"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "commons-1.2.1-sources.jar",
+          "url": "commons-1.2.1-sources.jar",
+          "size": 10118,
+          "sha512": "7b5a4f8bc9ba1075ce9af5c8b7a53c45ceb741ee364e341c232375668ba3f8121301f11e7174ca1a2f8550c4b373cc4a80500a779a9e57eda9f8b88b0874f7dd",
+          "sha256": "4c870b3d3e641201cbf766d8136079e01e20983a8110c8fc51ed72ad2b8b1a75",
+          "sha1": "19e028581fb013d9daa5a0dc677fcae0d12d4fe3",
+          "md5": "684d170fd46c9c46b39c9109c3685aab"
+        }
+      ]
+    }
+  ]
+}
