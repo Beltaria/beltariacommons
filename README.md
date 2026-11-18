@@ -14,7 +14,7 @@ Ce qui a un état ou un propriétaire ne va pas ici, mais dans le plugin qui en 
 |---|---|
 | `fr.beltaria.commons.lang.Lang` | Textes de `lang.yml`. Les clés absentes du fichier sont complétées par le jar, les codes `&` deviennent des couleurs, les `{placeholders}` sont remplacés et `prefix` précède chaque ligne envoyée. Un message vide n'est pas envoyé. Un fichier illisible, ou dont une clé contredit la forme du jar (section à la place d'un texte, ou l'inverse), fait échouer le chargement. `unknownKeys()` liste les fautes de frappe. |
 | `fr.beltaria.commons.text.Placeholders` | Remplace les `{nom}` en une seule passe : une valeur insérée n'est jamais relue. Un `{nom}` sans valeur reste visible. Des paires impaires ou un nom en double lèvent une exception. |
-| `fr.beltaria.commons.time.Durations` | Lit les durées `30m`, `1h30m`, `2d`, `45s` et les affiche sous quatre formes : `compact` (relisible), `clock` (`29:59`), `words` (`1 h 05`) et `countdown` (`4m 12s`). |
+| `fr.beltaria.commons.time.Durations` | Lit les durées `30m`, `1h30m`, `2d`, `45s`, et les secondes décimales au millième près : `1.5s`, `2.4s`, `0.25s`, `1m2.5s` (décimales sur les secondes seulement, 3 au plus ; négatif ou mal formé refusé). `toTicks` donne le nombre de ticks serveur (50 ms) et refuse une durée entre deux ticks en donnant les deux écritures valides les plus proches (`1.27s` : écrire `1.25s (25 ticks) ou 1.3s (26 ticks)`). Affiche sous quatre formes : `compact` (relisible, `1.5s` compris), `clock` (`29:59`), `words` (`1 h 05`) et `countdown` (`4m 12s`). |
 | `fr.beltaria.commons.time.Weekly` | Plannings hebdomadaires, toujours en `Europe/Paris` (`Weekly.ZONE`). Lit les jours en français ou en anglais (`*`, `tous` ou une clé absente : tous les jours ; une liste vide est refusée), les heures `"HH:mm"` entre guillemets (`"24:00"` en heure de fin ; un nombre, ce que YAML donne pour `21:00` sans guillemets, est refusé avec la forme à écrire), et donne la prochaine occurrence. Au changement d'heure, une heure sautée tombe une heure plus tard, une heure doublée ne tombe qu'une fois. |
 
 Dans un message, la couleur est appliquée au texte du fichier **avant** de remplacer les placeholders. Une valeur, comme un nom d'item renommé à l'enclume ou un pseudo, n'est donc jamais colorisée par ses `&`. Une valeur qui doit être colorée est passée déjà colorée, avec des `§`.
@@ -33,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    implementation("fr.beltaria:commons:1.1.0")
+    implementation("fr.beltaria:commons:1.3.0")
 }
 
 tasks.shadowJar {
@@ -47,6 +47,7 @@ Lang lang = Lang.load(plugin);              // IOException si lang.yml est cass�
 lang.unknownKeys().forEach(key -> plugin.getLogger().warning("lang.yml : clé inconnue " + key));
 lang.send(player, "sold", "item", name, "price", price);
 Duration cooldown = Durations.parsePositive(config.getString("cooldown", "30m"));
+long delay = Durations.toTicks(Durations.parse(config.getString("delay", "1.5s")));   // 30 ticks ; "1.27s" refusé
 ```
 
 ## Versions
